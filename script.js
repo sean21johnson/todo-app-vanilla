@@ -47,9 +47,21 @@ function addNewTodo(todo) {
 
 	const newTodoElText = todo.text;
 
-    if (todo.completed) {
-        newTodoEl.classList.add("completed");
-    }
+	if (todo.completed) {
+		newTodoEl.classList.add("completed");
+	}
+
+	if (currentTodoList === null) {
+		currentTodoList = [todo];
+		updateLS();
+	} else {
+		if (!currentTodoList.includes(todo)) currentTodoList.push(todo);
+		updateLS();
+	}
+
+	newTodoEl.innerText = newTodoElText;
+
+	todoList.appendChild(newTodoEl);
 
 	// Add an event handler that listener for a left click event
 	newTodoEl.addEventListener("click", () => {
@@ -76,24 +88,17 @@ function addNewTodo(todo) {
 	});
 
 	// Add an event handler that listens for a right click event
-
-	if (currentTodoList === null) {
-		currentTodoList = [todo];
+	newTodoEl.addEventListener("contextmenu", () => {
+		todoList.removeChild(newTodoEl);
+		const index = currentTodoList.indexOf(todo);
+		currentTodoList.splice(index, 1);
 		updateLS();
-	} else {
-		if (!currentTodoList.includes(todo)) currentTodoList.push(todo);
-		updateLS();
-	}
-
-	newTodoEl.innerText = newTodoElText;
-
-	todoList.appendChild(newTodoEl);
+	});
 }
 
 // Updating local storage with any new todo's
 function updateLS() {
 	listForLS = JSON.stringify(currentTodoList);
-
 	localStorage.setItem("todos", listForLS);
 }
 
