@@ -73,7 +73,7 @@ li {
 	text-align: center;
 }
 
-.complete {
+.completed {
     color: #adadad;
 	text-decoration: line-through;
 }
